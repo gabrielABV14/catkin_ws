@@ -1,0 +1,9 @@
+<launch>
+  <arg name="use_random_vel" default="true" />
+ 
+  <node pkg="turtlesim" type="turtlesim_node" name="turtlesim" respawn="true" />
+ 
+  <node pkg="beginner_tutorials" type="pubvel" name="pubvel" required="true" launch-prefix="xterm -e" if="$(arg use_random_vel)" />
+ 
+  <node pkg="turtlesim" type="turtle_teleop_key" name="teleop_key" required="true" launch-prefix="xterm -e" unless="$(arg use_random_vel)" />
+</launch>

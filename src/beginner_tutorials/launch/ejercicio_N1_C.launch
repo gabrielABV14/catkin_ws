@@ -1,0 +1,9 @@
+<launch>
+  <arg name="run_node_A" default="false"/>
+  <arg name="run_node_B" default="false"/>
+ 
+  <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" output="screen" />
+ 
+  <node name="safe_zone_vel_publisher" pkg="beginner_tutorials" type="safe_zone_vel_publisher" output="screen" if="$(arg run_node_A)"/>
+  <node name="smart_turtle" pkg="beginner_tutorials" type="smart_turtle" output="screen" if="$(arg run_node_B)"/>
+</launch>

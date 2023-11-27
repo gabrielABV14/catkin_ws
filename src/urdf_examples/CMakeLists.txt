@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(beginner_tutorials)
+project(urdf_examples)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -11,13 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  message_generation
-  genmsg
-  geometry_msgs
-  turtlesim
 )
-
-
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -110,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES beginner_tutorials
+#  LIBRARIES urdf_examples
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -122,15 +116,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
+# include
   ${catkin_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
 )
-
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/beginner_tutorials.cpp
+#   src/${PROJECT_NAME}/urdf_examples.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -141,7 +133,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/beginner_tutorials_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/urdf_examples_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -205,35 +197,10 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_beginner_tutorials.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_urdf_examples.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-#This will create executables of the nodes
-add_executable(demo_topic_publisher src/demo_topic_publisher.cpp)
-add_executable(demo_topic_subscriber src/demo_topic_subscriber.cpp)
-#This will generate message header file before building the target
-#add_dependencies(demo_topic_publisher mastering_ros_demo_pkg_generate_messages_cpp)
-#add_dependencies(demo_topic_subscriber mastering_ros_demo_pkg_generate_messages_cpp)
-#This will link executables to the appropriate libraries
-target_link_libraries(demo_topic_publisher ${catkin_LIBRARIES})
-target_link_libraries(demo_topic_subscriber ${catkin_LIBRARIES})
-
-
-# Declare the executable, along whith its source files.
-add_executable(pubvel src/pubvel.cpp)
-add_executable(subpose src/subpose.cpp)
-
-# Specify libreries againts which to link
-target_link_libraries(pubvel ${catkin_LIBRARIES})
-target_link_libraries(subpose ${catkin_LIBRARIES})
-
-add_executable(safe_zone_vel_publisher src/safe_zone_vel_publisher.cpp)
-target_link_libraries(safe_zone_vel_publisher ${catkin_LIBRARIES})
-
-add_executable(smart_turtle src/smart_turtle.cpp)
-target_link_libraries(smart_turtle ${catkin_LIBRARIES})

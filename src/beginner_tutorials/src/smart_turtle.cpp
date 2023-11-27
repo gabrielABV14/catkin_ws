@@ -1,28 +1,33 @@
-// This program publishes randomly-generated velocity
-// messages for turtlesim.
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>  // For geometry_msgs::Twist
 #include <stdlib.h> // For rand() and RAND_MAX
 #include <turtlesim/Pose.h>
  
-bool safe_zone = true;
- 
-void turtlePose(const turtlesim::Pose& msg) {
+bool wall_detect = true;
+int wall_detect_condition = 0;
+float theta = 0.0;
+void turtlePose_wall(const turtlesim::Pose& msg) {
   ROS_INFO_STREAM(std::setprecision(2) << std::fixed
     << "position=(" <<  msg.x << "," << msg.y << ")"
     << " direction=" << msg.theta);
- 
-    if(msg.x >= 3 && msg.x<=8 && msg.y>=3 && msg.y<=8 ){
-      safe_zone = true;
+    theta = msg.theta;
+    if(msg.x <= 1 || msg.x >= 10 || msg.y <= 1 || msg.y >= 10){
+      wall_detect = true;
+      if (msg.y >= 10){
+        wall_detect_condition = 1;
+      }
+      if(msg.x >= 10){
+        wall_detect_condition = 2;
+      }
     }
     else{
-      safe_zone = false;
+      wall_detect = false;
     }
 }
  
 int main(int argc, char **argv) {
   // Initialize the ROS system and become a node.
-  ros::init(argc, argv, "safe_zone_node");
+  ros::init(argc, argv, "smart_turtle");
   ros::NodeHandle nh;
  
   // Create a publisher object.
@@ -30,32 +35,28 @@ int main(int argc, char **argv) {
     "turtle1/cmd_vel", 1000);
   // Create a subscriber object.
   ros::Subscriber sub = nh.subscribe("turtle1/pose", 1000,
-    &turtlePose);
+    &turtlePose_wall);
  
   // Seed the random number generator.
   srand(time(0));
- 
   // Loop at 2Hz until the node is shut down.
   ros::Rate rate(2);
   while(ros::ok()) {
-    // Create and fill in the message.  The other four
-    // fields, which are ignored by turtlesim, default to 0.
     geometry_msgs::Twist msg;
-    if(safe_zone){
-      msg.linear.x = 1;
-      msg.angular.z = 2*double(rand())/double(RAND_MAX) - 1;
-    }else{
-      msg.linear.x = double(rand())/double(RAND_MAX);
-      msg.angular.z = 2*double(rand())/double(RAND_MAX) - 1;
+    if(wall_detect){
+       msg.angular.z = 2;
+       msg.linear.x = 2;
+    }
+    else{
+        msg.linear.x = double(rand())/double(RAND_MAX);
+        msg.angular.z = 2*double(rand())/double(RAND_MAX) - 1;
     }
     // Publish the message.
     pub.publish(msg);
+    ROS_INFO_STREAM("angulo"
+      << " theta=" << theta
+      << " condition=" << wall_detect_condition);
  
-    // Send a message to rosout with the details.
-    ROS_INFO_STREAM("Sending random velocity command:"
-      << " linear=" << msg.linear.x
-      << " angular=" << msg.angular.z);
-    // Wait until it's time for another iteration.
     rate.sleep();
     ros::spinOnce();
   }
