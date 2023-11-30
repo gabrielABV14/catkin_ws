@@ -1,0 +1,21 @@
+<launch>
+<node
+    pkg="turtlesim"
+    type="turtlesim_node"
+    name="turtlesim"
+/>
+<node
+    pkg="turtlesim"
+    type="turtle_teleop_key"
+    name="true"
+    required="true"
+    launch-prefix="xterm -e"
+/>
+<node
+    pkg="beginner_tutorials"
+    type="move_second_turtle"
+    name="Ej1"
+    output="screen"
+/>
+
+</launch>

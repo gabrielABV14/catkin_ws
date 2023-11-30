@@ -1,0 +1,29 @@
+<launch>
+ 
+  <node
+    pkg = "turtlesim"
+    type = "turtlesim_node"
+    name = "turtlesim"
+  />
+ 
+    <node
+    pkg="beginner_tutorials"
+    type="distance_checker_plus"
+    name="spawn"
+    respawn="true"
+  />
+    <node pkg="turtlesim" name="turtle_teleop_key" type="turtle_teleop_key" required = "true"
+    launch-prefix = "xterm -e">
+    <remap from="turtle1/cmd_vel" to="turtle2/cmd_vel"/>
+    </node>
+ 
+ 
+    <node
+    pkg="beginner_tutorials"
+    type="distance_observer"
+    name="distance_observer"
+    required="true"
+    launch-prefix="xterm -e"
+  />
+ 
+</launch>

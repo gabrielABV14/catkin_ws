@@ -194,3 +194,7 @@ include_directories(
 add_executable(urdf_tutorial_template src/urdf_tutorial_template.cpp)
 target_link_libraries(urdf_tutorial_template ${catkin_LIBRARIES})
 # add_dependencies(urdf_tutorial ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}) 
+
+
+add_executable(ejercicioN3 src/ejercicioN3.cpp)
+target_link_libraries(ejercicioN3 ${catkin_LIBRARIES})
